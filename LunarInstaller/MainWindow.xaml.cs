@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
+using System.Security.Principal;
 using System.Windows;
 using IWshRuntimeLibrary;
 
@@ -16,6 +18,10 @@ namespace LunarInstaller
 
         private void DownloadAndInstallButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!IsRunningAsAdministrator()) 
+            {
+                RelaunchAsAdministrator();
+            }
             string zipUrl = "https://cdn.lunarfn.com/lunar_files.zip";
 
             string destinationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "LunarFN");
@@ -63,5 +69,42 @@ namespace LunarInstaller
             shortcut.Description = "LunarFN Shortcut";
             shortcut.Save();
         }
+
+        static bool IsRunningAsAdministrator()
+        {
+            WindowsIdentity currentIdentity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal currentPrincipal = new WindowsPrincipal(currentIdentity);
+
+            // Check if the current user has administrative privileges
+            return currentPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        static void RelaunchAsAdministrator()
+        {
+            // Get the path to the current executable
+            string exePath = Process.GetCurrentProcess().MainModule.FileName;
+
+            // Create a new process start info with the same executable path
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = exePath,
+                UseShellExecute = true,
+                Verb = "runas" // This is needed to trigger UAC
+            };
+
+            try
+            {
+                // Start the new process (current executable with "runas" verb)
+                Process.Start(startInfo);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to relaunch as administrator: " + ex.Message);
+            }
+
+            // Note: Avoid calling Environment.Exit(0);
+            // Allow the application to exit naturally.
+        }
+
     }
 }

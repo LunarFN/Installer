@@ -8,7 +8,7 @@
     xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="LunarInstaller.MainWindow"
     mc:Ignorable="d"
     Title="Lunar" Height="96" Width="318"
-    ui:WindowHelper.UseModernWindowStyle="True" ResizeMode="NoResize">
+    ui:WindowHelper.UseModernWindowStyle="True" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Margin="10,0,0,10">
         <StackPanel Margin="10">
             <Button x:Name="DownloadAndInstallButton" Content="Download and Install" Click="DownloadAndInstallButton_Click" Height="33" Width="282" Background="BlueViolet"/>
