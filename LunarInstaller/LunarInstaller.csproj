@@ -2,11 +2,16 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <RootNamespace>Lunar_Installer</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <PublishSingleFile>true</PublishSingleFile>
+    <UseWindowsForms>False</UseWindowsForms>
+    <StartupObject>Lunar_Installer.App</StartupObject>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,6 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Costura.Fody" Version="5.7.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="ModernWpfUI" Version="0.9.6" />
   </ItemGroup>
 
