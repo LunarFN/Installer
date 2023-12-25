@@ -44,10 +44,12 @@ namespace LunarInstaller
                 CreateShortcut(executablePathInZip, destinationFolder, shortcutPath);
 
                 MessageBox.Show("Lunar has been Downloaded Succesfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
             }
         }
 
