@@ -8,11 +8,11 @@
     xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="LunarInstaller.MainWindow"
     mc:Ignorable="d"
     Icon="icon.ico"
-    Title="Lunar" Height="96" Width="318"
+    Title="Lunar - Updater" Height="96" Width="318"
     ui:WindowHelper.UseModernWindowStyle="True" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Margin="10,0,0,10">
         <StackPanel Margin="10">
-            <Button x:Name="DownloadAndInstallButton" Content="Download and Install" Click="DownloadAndInstallButton_Click" Height="33" Width="282" Background="BlueViolet"/>
+            <Button x:Name="DownloadAndInstallButton" Content="Update and Verify Files" Click="DownloadAndInstallButton_Click" Height="33" Width="282" Background="BlueViolet"/>
         </StackPanel>
     </Grid>
 </Window>
