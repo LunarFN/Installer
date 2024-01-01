@@ -22,7 +22,7 @@ namespace LunarInstaller
             {
                 RelaunchAsAdministrator();
             }
-            string zipUrl = "https://cdn.lunarfn.com/lunar_files.zip";
+            string zipUrl = "https://cdn.lunarfn.org/lunar_files.zip";
 
             string destinationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "LunarFN");
 
@@ -49,7 +49,7 @@ namespace LunarInstaller
                 string shortcutPath = Path.Combine(desktopFolder, "Lunar.lnk");
                 CreateShortcut(executablePathInZip, destinationFolder, shortcutPath);
 
-                MessageBox.Show("Lunar has been Downloaded Succesfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Lunar has been Updated Succesfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
             }
             catch (Exception ex)
