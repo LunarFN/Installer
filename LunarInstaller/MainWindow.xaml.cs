@@ -22,7 +22,7 @@ namespace LunarInstaller
             {
                 RelaunchAsAdministrator();
             }
-            string zipUrl = "https://cdn.lunarfn.com/lunar_files.zip";
+            string zipUrl = "https://cdn.lunarfn.org/lunar_files.zip";
 
             string destinationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "LunarFN");
 
