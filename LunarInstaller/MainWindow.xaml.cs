@@ -6,6 +6,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Windows;
 using IWshRuntimeLibrary;
+using Microsoft.Win32;
 
 namespace LunarInstaller
 {
@@ -18,11 +19,11 @@ namespace LunarInstaller
 
         private void DownloadAndInstallButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsRunningAsAdministrator()) 
+            if (!IsRunningAsAdministrator())
             {
                 RelaunchAsAdministrator();
             }
-            string zipUrl = "https://cdn.lunarfn.org/lunar_files.zip";
+            string zipUrl = "https://api.lunarfn.org/assets/files/lunar_files.zip";
 
             string destinationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "LunarFN");
 
@@ -46,10 +47,14 @@ namespace LunarInstaller
 
                 ZipFile.ExtractToDirectory(zipFilePath, destinationFolder);
 
+                // Create shortcut
                 string shortcutPath = Path.Combine(desktopFolder, "Lunar.lnk");
                 CreateShortcut(executablePathInZip, destinationFolder, shortcutPath);
 
-                MessageBox.Show("Lunar has been Downloaded Succesfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Add Registry entries
+                AddRegistryEntries();
+
+                MessageBox.Show("Lunar has been Downloaded and Installed Successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
             }
             catch (Exception ex)
@@ -68,6 +73,43 @@ namespace LunarInstaller
             shortcut.WorkingDirectory = workingDirectory;
             shortcut.Description = "LunarFN Shortcut";
             shortcut.Save();
+        }
+
+        private void AddRegistryEntries()
+        {
+            try
+            {
+                using (RegistryKey key = Registry.ClassesRoot.CreateSubKey("lunarfn"))
+                {
+                    if (key != null)
+                    {
+                        key.SetValue("", "URL:lunarfn");
+
+                        using (RegistryKey subKeyShell = key.CreateSubKey("shell"))
+                        {
+                            using (RegistryKey subKeyOpen = subKeyShell.CreateSubKey("open"))
+                            {
+                                using (RegistryKey subKeyCommand = subKeyOpen.CreateSubKey("command"))
+                                {
+                                    subKeyCommand.SetValue("", @"""C:\Program Files\LunarFN\Lunar.exe"" ""%1""");
+                                }
+                            }
+                        }
+                    }
+                }
+
+                using (RegistryKey key = Registry.ClassesRoot.CreateSubKey("lunar"))
+                {
+                    if (key != null)
+                    {
+                        key.SetValue("URL Protocol", "");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error, Code: 2", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         static bool IsRunningAsAdministrator()
