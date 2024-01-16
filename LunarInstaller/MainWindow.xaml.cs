@@ -22,7 +22,7 @@ namespace LunarInstaller
             {
                 RelaunchAsAdministrator();
             }
-            string zipUrl = "https://cdn.lunarfn.org/lunar_files.zip";
+            string zipUrl = "https://api.lunarfn.org/cloud/lunar_files.zip";
 
             string destinationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "LunarFN");
 
@@ -34,10 +34,14 @@ namespace LunarInstaller
 
             try
             {
-                if (!Directory.Exists(destinationFolder))
+                if (Directory.Exists(destinationFolder))
                 {
-                    Directory.CreateDirectory(destinationFolder);
+                    // If the folder exists, delete it and its contents
+                    Directory.Delete(destinationFolder, true);
                 }
+
+                // Recreate the folder
+                Directory.CreateDirectory(destinationFolder);
 
                 using (WebClient client = new WebClient())
                 {
@@ -58,6 +62,7 @@ namespace LunarInstaller
                 Close();
             }
         }
+
 
         private void CreateShortcut(string targetPath, string workingDirectory, string shortcutPath)
         {
